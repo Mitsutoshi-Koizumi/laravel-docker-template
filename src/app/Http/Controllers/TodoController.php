@@ -43,9 +43,18 @@ class TodoController extends Controller
     }
 
     public function edit($id)
-{
-    $todo = Todo::findOrFail($id);
+    {
+        $todo = Todo::findOrFail($id);
 
-    return view('todo.edit', ['todo' => $todo]);
-}
+        return view('todo.edit', ['todo' => $todo]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $todo = $this->todo->find($id);
+        $todo->fill($inputs)->save();
+
+        return redirect()->route('todo.show', $todo->id);
+    }
 }
